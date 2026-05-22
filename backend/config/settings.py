@@ -113,3 +113,15 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = not DEBUG
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "root": {"handlers": ["console"], "level": "WARNING"},
+    "loggers": {
+        "django": {"handlers": ["console"], "level": "ERROR", "propagate": False},
+    },
+}
