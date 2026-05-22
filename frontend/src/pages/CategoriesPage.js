@@ -5,45 +5,52 @@ import { getCategories } from '../api';
 const IMAGE_MAP = [
   {
     keywords: ['sac', 'bag', 'maroquin', 'pochette', 'valise'],
-    url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80',
+    url: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #c9a96e 0%, #8b6914 100%)',
   },
   {
     keywords: ['parfum', 'perfum', 'fragrance', 'cologne', 'eau de'],
-    url: 'https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=600&q=80',
+    url: 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #e8c9f0 0%, #9b59b6 100%)',
   },
   {
     keywords: ['skin', 'soin', 'crème', 'creme', 'beauté', 'beaute', 'cosmétique', 'cosmetique', 'sérum', 'serum'],
-    url: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+    url: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #fce4ec 0%, #e91e63 100%)',
   },
   {
     keywords: ['chaussure', 'shoe', 'basket', 'talon', 'botte', 'sandal'],
     url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #ffccbc 0%, #e64a19 100%)',
   },
   {
     keywords: ['bijou', 'bijoux', 'montre', 'bracelet', 'collier', 'bague', 'jewelry', 'watch'],
     url: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #fff9c4 0%, #f9a825 100%)',
   },
   {
     keywords: ['aliment', 'food', 'pasta', 'huile', 'olive', 'sauce', 'épice', 'epice', 'café', 'cafe'],
     url: 'https://images.unsplash.com/photo-1551183053-bf91798d773e?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #dcedc8 0%, #558b2f 100%)',
   },
   {
     keywords: ['vêtement', 'vetement', 'mode', 'habit', 'robe', 'fashion', 'manteau'],
     url: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80',
+    fallbackGradient: 'linear-gradient(135deg, #b3e5fc 0%, #0277bd 100%)',
   },
 ];
 
 const FALLBACKS = [
-  'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80',
-  'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=600&q=80',
+  { url: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #009246 0%, #CE2B37 100%)' },
+  { url: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #CE2B37 0%, #009246 100%)' },
+  { url: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #1a1a1a 0%, #009246 100%)' },
+  { url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #009246 0%, #1a1a1a 100%)' },
 ];
 
-function getCategoryImage(name, index) {
+function getCategoryEntry(name, index) {
   const lower = name.toLowerCase();
   for (const entry of IMAGE_MAP) {
-    if (entry.keywords.some(k => lower.includes(k))) return entry.url;
+    if (entry.keywords.some(k => lower.includes(k))) return entry;
   }
   return FALLBACKS[index % FALLBACKS.length];
 }
@@ -131,7 +138,9 @@ export default function CategoriesPage() {
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#9ca3af' }}>Aucune catégorie disponible.</div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 24 }}>
-            {categories.map((cat, i) => (
+            {categories.map((cat, i) => {
+              const entry = getCategoryEntry(cat.name, i);
+              return (
               <Link key={cat.id} to={`/categories/${cat.slug}`} style={{ textDecoration: 'none' }}>
                 <div
                   style={{
@@ -141,21 +150,25 @@ export default function CategoriesPage() {
                     overflow: 'hidden',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     cursor: 'pointer',
+                    background: entry.fallbackGradient,
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.querySelector('.cat-img').style.transform = 'scale(1.08)';
+                    const img = e.currentTarget.querySelector('.cat-img');
+                    if (img) img.style.transform = 'scale(1.08)';
                     e.currentTarget.querySelector('.cat-btn').style.background = '#CE2B37';
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.querySelector('.cat-img').style.transform = 'scale(1)';
+                    const img = e.currentTarget.querySelector('.cat-img');
+                    if (img) img.style.transform = 'scale(1)';
                     e.currentTarget.querySelector('.cat-btn').style.background = '#009246';
                   }}
                 >
                   {/* Photo */}
                   <img
                     className="cat-img"
-                    src={getCategoryImage(cat.name, i)}
+                    src={entry.url}
                     alt={cat.name}
+                    onError={e => { e.target.style.display = 'none'; }}
                     style={{
                       width: '100%',
                       height: '100%',
@@ -203,7 +216,8 @@ export default function CategoriesPage() {
                   </div>
                 </div>
               </Link>
-            ))}
+            );
+            })}
           </div>
         )}
       </div>
