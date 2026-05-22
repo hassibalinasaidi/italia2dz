@@ -2,14 +2,51 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCategories } from '../api';
 
-const COLORS = [
-  { bg: '#f0faf4', border: '#009246', accent: '#009246' },
-  { bg: '#fff5f5', border: '#CE2B37', accent: '#CE2B37' },
-  { bg: '#f5f3ff', border: '#7c3aed', accent: '#7c3aed' },
-  { bg: '#fff7ed', border: '#ea580c', accent: '#ea580c' },
-  { bg: '#f0f9ff', border: '#0284c7', accent: '#0284c7' },
-  { bg: '#fdf4ff', border: '#a21caf', accent: '#a21caf' },
+const IMAGE_MAP = [
+  {
+    keywords: ['sac', 'bag', 'maroquin', 'pochette', 'valise'],
+    url: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    keywords: ['parfum', 'perfum', 'fragrance', 'cologne', 'eau de'],
+    url: 'https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    keywords: ['skin', 'soin', 'crème', 'creme', 'beauté', 'beaute', 'cosmétique', 'cosmetique', 'sérum', 'serum'],
+    url: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    keywords: ['chaussure', 'shoe', 'basket', 'talon', 'botte', 'sandal'],
+    url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    keywords: ['bijou', 'bijoux', 'montre', 'bracelet', 'collier', 'bague', 'jewelry', 'watch'],
+    url: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    keywords: ['aliment', 'food', 'pasta', 'huile', 'olive', 'sauce', 'épice', 'epice', 'café', 'cafe'],
+    url: 'https://images.unsplash.com/photo-1551183053-bf91798d773e?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    keywords: ['vêtement', 'vetement', 'mode', 'habit', 'robe', 'fashion', 'manteau'],
+    url: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80',
+  },
 ];
+
+const FALLBACKS = [
+  'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=600&q=80',
+];
+
+function getCategoryImage(name, index) {
+  const lower = name.toLowerCase();
+  for (const entry of IMAGE_MAP) {
+    if (entry.keywords.some(k => lower.includes(k))) return entry.url;
+  }
+  return FALLBACKS[index % FALLBACKS.length];
+}
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
@@ -86,7 +123,6 @@ export default function CategoriesPage() {
           <p style={{ color: '#009246', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '3px', textTransform: 'uppercase', marginBottom: 4 }}>Catalogue</p>
           <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.75rem', color: '#1a1a1a' }}>Nos Catégories</h2>
         </div>
-
         <div style={{ height: 2, background: 'linear-gradient(to right, #009246, #ffffff, #CE2B37)', borderRadius: 2, marginBottom: 32 }} />
 
         {loading ? (
@@ -94,37 +130,80 @@ export default function CategoriesPage() {
         ) : categories.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '80px 0', color: '#9ca3af' }}>Aucune catégorie disponible.</div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 20 }}>
-            {categories.map((cat, i) => {
-              const c = COLORS[i % COLORS.length];
-              return (
-                <Link
-                  key={cat.id}
-                  to={`/categories/${cat.slug}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  <div style={{
-                    background: c.bg,
-                    border: `2px solid ${c.border}`,
-                    borderRadius: 14,
-                    padding: '36px 24px',
-                    textAlign: 'center',
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 24 }}>
+            {categories.map((cat, i) => (
+              <Link key={cat.id} to={`/categories/${cat.slug}`} style={{ textDecoration: 'none' }}>
+                <div
+                  style={{
+                    position: 'relative',
+                    height: 320,
+                    borderRadius: 16,
+                    overflow: 'hidden',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     cursor: 'pointer',
-                    transition: 'transform 0.15s, box-shadow 0.15s',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)'; }}
-                  >
-                    <div style={{ fontSize: '2.8rem', marginBottom: 14 }}>🛍️</div>
-                    <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.15rem', fontWeight: 700, color: '#1a1a1a', marginBottom: 8 }}>{cat.name}</div>
-                    <div style={{ fontSize: '0.78rem', color: c.accent, fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase' }}>
-                      Voir les produits →
+                  onMouseEnter={e => {
+                    e.currentTarget.querySelector('.cat-img').style.transform = 'scale(1.08)';
+                    e.currentTarget.querySelector('.cat-btn').style.background = '#CE2B37';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.querySelector('.cat-img').style.transform = 'scale(1)';
+                    e.currentTarget.querySelector('.cat-btn').style.background = '#009246';
+                  }}
+                >
+                  {/* Photo */}
+                  <img
+                    className="cat-img"
+                    src={getCategoryImage(cat.name, i)}
+                    alt={cat.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transition: 'transform 0.4s ease',
+                    }}
+                  />
+
+                  {/* Gradient overlay */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)',
+                  }} />
+
+                  {/* Italian flag accent top-left */}
+                  <div style={{ position: 'absolute', top: 14, left: 14, display: 'flex', gap: 3 }}>
+                    <div style={{ width: 5, height: 22, background: '#009246', borderRadius: 3 }} />
+                    <div style={{ width: 5, height: 22, background: '#fff', borderRadius: 3 }} />
+                    <div style={{ width: 5, height: 22, background: '#CE2B37', borderRadius: 3 }} />
+                  </div>
+
+                  {/* Text at bottom */}
+                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 22px' }}>
+                    <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '1.35rem', fontWeight: 700, color: '#fff', marginBottom: 12, textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
+                      {cat.name}
+                    </div>
+                    <div
+                      className="cat-btn"
+                      style={{
+                        display: 'inline-block',
+                        background: '#009246',
+                        color: '#fff',
+                        padding: '7px 18px',
+                        borderRadius: 6,
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase',
+                        transition: 'background 0.2s',
+                      }}
+                    >
+                      Découvrir →
                     </div>
                   </div>
-                </Link>
-              );
-            })}
+                </div>
+              </Link>
+            ))}
           </div>
         )}
       </div>
