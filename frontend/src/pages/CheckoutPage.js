@@ -60,7 +60,7 @@ export default function CheckoutPage() {
             <p style={{ fontFamily: 'Playfair Display, serif', fontWeight: 600, marginBottom: 20, fontSize: '1.05rem', color: '#1a1a1a' }}>Informations personnelles</p>
             <div style={{ marginBottom: 16 }}>
               <label style={lbl}>Nom complet *</label>
-              <input style={inp} name="full_name" placeholder="Mohamed Benali" value={form.full_name} onChange={handle} onFocus={onFocus} onBlur={onBlur} required />
+              <input style={inp} name="full_name" placeholder="Votre nom et prénom" value={form.full_name} onChange={handle} onFocus={onFocus} onBlur={onBlur} required />
             </div>
             <div style={{ marginBottom: 16 }}>
               <label style={lbl}>Email *</label>
