@@ -15,7 +15,7 @@ const IMAGE_MAP = [
   },
   {
     keywords: ['skin', 'soin', 'crème', 'creme', 'beauté', 'beaute', 'cosmétique', 'cosmetique', 'sérum', 'serum'],
-    url: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80',
+    url: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80',
     fallbackGradient: 'linear-gradient(135deg, #fce4ec 0%, #e91e63 100%)',
   },
   {
@@ -41,10 +41,10 @@ const IMAGE_MAP = [
 ];
 
 const FALLBACKS = [
-  { url: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #009246 0%, #CE2B37 100%)' },
-  { url: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #CE2B37 0%, #009246 100%)' },
-  { url: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #1a1a1a 0%, #009246 100%)' },
-  { url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #009246 0%, #1a1a1a 100%)' },
+  { url: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #009246 0%, #CE2B37 100%)' },
+  { url: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #CE2B37 0%, #009246 100%)' },
+  { url: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #1a1a1a 0%, #009246 100%)' },
+  { url: 'https://images.unsplash.com/photo-1599481238640-4c1288750d7a?auto=format&fit=crop&w=600&q=80', fallbackGradient: 'linear-gradient(135deg, #009246 0%, #1a1a1a 100%)' },
 ];
 
 function getCategoryEntry(name, index) {
