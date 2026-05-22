@@ -112,7 +112,7 @@ CORS_ALLOW_CREDENTIALS = True
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "False") == "True"
 
 LOGGING = {
     "version": 1,
